@@ -1,6 +1,8 @@
 services:
   backstage:
-    image: backstage:latest
+    build:
+      context: .
+      dockerfile: backstage/packages/backend/Dockerfile
     ports:
       - "7007:7007"
     depends_on:

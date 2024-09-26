@@ -46,7 +46,7 @@ RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid
     yarn install --frozen-lockfile --development --network-timeout 300000
 
 # This will include the examples, if you don't need these simply remove this line
-COPY --chown=node:node examples ./examples
+COPY --chown=node:node github-app-backstage-33-credentials.yaml ./github-app-backstage-33-credentials.yaml
 
 # Then copy the rest of the backend bundle, along with any other files we might want.
 COPY --chown=node:node packages/backend/dist/bundle.tar.gz app-config*.yaml ./

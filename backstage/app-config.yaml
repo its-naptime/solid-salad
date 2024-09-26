@@ -39,9 +39,15 @@ backend:
 integrations:
   github:
     - host: github.com
-      # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
-      # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
-      token: ${GITHUB_TOKEN}
+      apps:
+        - $include: github-app-backstage-33-credentials.yaml
+
+# integrations:
+#   github:
+#     - host: github.com
+#       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
+#       # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
+#       token: ${GITHUB_TOKEN}
     ### Example for how to add your GitHub Enterprise instance using the API:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
@@ -85,28 +91,8 @@ scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
-  import:
-    entityFilename: catalog-info.yaml
-    pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
-  locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    - type: file
-      target: ../../examples/entities.yaml
-
-    # Local example template
-    - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
-
-    # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
-
+    - allow: [System, Component, API, Resource, Location, Domain, Group]
     ## Uncomment these lines to add more example data
     # - type: url
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
@@ -116,11 +102,61 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+  providers:
+    githubOrg:
+      id: github
+      githubUrl: https://github.com/placeholder-org-33
+      orgs: ['placeholder-org-33']
+      schedule:
+        initialDelay: { seconds: 30 }
+        frequency: { hours: 1 }
+        timeout: { minutes: 50 }
 
+    github:
+      providerId: 
+        organization: 'placeholder-org-33' # string
+        catalogPath: '/catalog-info.yaml' # string
+        filters:
+          branch: 'main' # string
+          repository: '.*' # Regex
+        schedule: # same options as in SchedulerServiceTaskScheduleDefinition
+          # supports cron, ISO duration, "human duration" as used in code
+          frequency: { minutes: 1 }
+          # supports ISO duration, "human duration" as used in code
+          timeout: { minutes: 2 }
+    
 kubernetes:
-  # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - name: minikube
+          url: https://192.168.49.2:8443
+          authProvider: 'serviceAccount'
+          serviceAccountToken: ${KUBE_TOKEN}
+          caData: ${CA_DATA}
+          skipTLSVerify: false
+          skipMetricsLookup: true
+          namespace: backstage
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework
 permission:
   # setting this to `false` will disable permissions
   enabled: true
+
+
+logging:
+  level: debug  # Set the overall logging level
+  format: json  # Use JSON format for easier parsing
+  levels:
+    knex: debug # Database query logging
+    express: debug # Express.js logging
+    '@backstage/catalog-backend': debug
+    '@backstage/plugin-catalog-backend': debug
+    '@backstage/plugin-scaffolder-backend': debug
+    '@backstage/plugin-auth-backend': debug
+  filterByLabel:
+    - type
+    - component
+    - plugin
