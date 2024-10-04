@@ -40,7 +40,7 @@ integrations:
   github:
     - host: github.com
       apps:
-        - $include: github-app-backstage-33-credentials.yaml
+        - $include: github-app-backstage-333-credentials.yaml
 
 # integrations:
 #   github:
@@ -48,10 +48,10 @@ integrations:
 #       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
 #       # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
 #       token: ${GITHUB_TOKEN}
-    ### Example for how to add your GitHub Enterprise instance using the API:
-    # - host: ghe.example.net
-    #   apiBaseUrl: https://ghe.example.net/api/v3
-    #   token: ${GHE_TOKEN}
+### Example for how to add your GitHub Enterprise instance using the API:
+# - host: ghe.example.net
+#   apiBaseUrl: https://ghe.example.net/api/v3
+#   token: ${GHE_TOKEN}
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -86,7 +86,6 @@ auth:
             - resolver: emailMatchingUserEntityProfileEmail
             - resolver: emailLocalPartMatchingUserEntityName
 
-
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
@@ -113,7 +112,7 @@ catalog:
         timeout: { minutes: 50 }
 
     github:
-      providerId: 
+      providerId:
         organization: 'placeholder-org-33' # string
         catalogPath: '/catalog-info.yaml' # string
         filters:
@@ -124,7 +123,7 @@ catalog:
           frequency: { minutes: 1 }
           # supports ISO duration, "human duration" as used in code
           timeout: { minutes: 2 }
-    
+
 kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
@@ -145,10 +144,9 @@ permission:
   # setting this to `false` will disable permissions
   enabled: true
 
-
 logging:
-  level: debug  # Set the overall logging level
-  format: json  # Use JSON format for easier parsing
+  level: debug # Set the overall logging level
+  format: json # Use JSON format for easier parsing
   levels:
     knex: debug # Database query logging
     express: debug # Express.js logging
