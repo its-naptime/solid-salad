@@ -131,13 +131,12 @@ kubernetes:
     - type: 'config'
       clusters:
         - name: minikube
-          url: https://192.168.49.2:8443
+          url: https://127.0.0.1:49884
           authProvider: 'serviceAccount'
           serviceAccountToken: ${KUBE_TOKEN}
           caData: ${CA_DATA}
           skipTLSVerify: false
           skipMetricsLookup: true
-          namespace: backstage
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework
 permission:
