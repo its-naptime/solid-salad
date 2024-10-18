@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigate, Route } from 'react-router-dom';
+import './techdocs-override.css';
 import { apiDocsPlugin, ApiExplorerPage } from '@backstage/plugin-api-docs';
 import {
   CatalogEntityPage,

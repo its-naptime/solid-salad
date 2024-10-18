@@ -1,4 +1,5 @@
 import React from 'react';
+import { CICDInfoCard } from './CICDInfoCard.tsx';
 import { Button, Grid } from '@material-ui/core';
 import {
   EntityApiDefinitionCard,
@@ -138,6 +139,9 @@ const overviewContent = (
     </Grid>
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
+    </Grid>
+    <Grid item md={6}>
+      <CICDInfoCard />
     </Grid>
   </Grid>
 );
